@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>canvasLine</title>
+	<style type="text/css">
+		#canvas {
+			border: 1px solid #ccc;
+			display: block;
+			margin: 50px auto;
+		}
+	</style>
+</head>
+<body>
+	<canvas id='canvas'>
+		你的浏览器不支持canvas，请更换浏览器。
+	</canvas>
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas')
+    var data = [
+      {p: [{x: 0, y: 0}, {x: 250, y: 250}, {x: 0, y: 500}], color: '#66BDCF'},  //  蓝色
+      {p: [{x: 0, y: 0}, {x: 250, y: 250}, {x: 500, y: 0}], color: '#CEFE68'},  //  浅绿色
+      {p: [{x: 0, y: 500}, {x: 250, y: 500}, {x: 125, y: 375}], color: '#F78ECE'}, //  粉红色
+      {p: [{x: 125, y: 375}, {x: 250, y: 500}, {x: 375, y: 375}, {x: 250, y: 250}], color: '#A795C3'},   //  紫色
+      {p: [{x: 250, y: 250}, {x: 375, y: 375}, {x: 375, y: 125}], color: '#FAF61C'},   //  黄色
+      {p: [{x: 375, y: 125}, {x: 500, y: 0}, {x: 500, y: 250}, {x: 375, y: 375}], color: '#F13C64'},   //   红色
+      {p: [{x: 250, y: 500}, {x: 500, y: 500}, {x: 500, y: 250}], color: '#F7C928'}    //  金色
+    ]
+    canvas.width = 500
+		canvas.height = 500
+    
+		var ctx = canvas.getContext('2d')
+    
+
+    for (var i = 0; i < data.length; i++) {
+    	draw(data[i], ctx)
+    }
+
+    function draw(item, ctx) {
+    	ctx.beginPath()  //   开始书写绘画状态
+    	ctx.moveTo(item.p[0].x, item.p[0].y)
+    	var length = item.p.length
+    	for(var i = 1; i < length; i++) {
+    		ctx.lineTo(item.p[i].x, item.p[i].y)
+    	}
+    	ctx.lineTo(item.p[0].x, item.p[0].y)
+    	ctx.closePath()  //   结束书写绘画状态
+    	ctx.strokeStyle = item.color  // 设置边线颜色
+    	ctx.stroke()   //   开始绘画
+    	ctx.fillStyle = item.color //  设置填充色
+      ctx.fill()  //  填充
+    }
+	
+		
+	</script>
+</body>
+</html>
