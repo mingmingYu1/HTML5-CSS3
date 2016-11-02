@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>rect</title>
+	<style type="text/css">
+		#canvas {
+			display: block;
+			margin: 50px auto;
+			border: 1px solid #ccc;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<script type="text/javascript">
+    var WIDTH = 500
+    var HEIGHT = 500
+    var ball = {
+    	x: 500, y: 50, r: 20, g: 2, vx: -4, vy: 0, color: '#005588'
+    }
+		window.onload = function() {
+			var canvas = document.getElementById('canvas')
+			canvas.width = WIDTH
+			canvas.height = HEIGHT
+
+			var ctx = canvas.getContext('2d')
+			setInterval(function() {
+				render(ctx)
+				updata()
+			}, 50)
+		}
+		function updata() {
+
+			//   每次改变小球圆心x抽的位置，让小球成抛物线的形状
+			ball.x += ball.vx
+			//   每次改变小球圆心y抽的位置
+			ball.y += ball.vy
+			//   ball.g即为现实生活中的加速度，改变小球圆心y抽的位置
+			ball.vy += ball.g
+			/*
+			 ** 碰撞检测
+			 ** 当小球到达底部时即小球此时y抽的位置已经大于容器高度-小球半径时，说明小球已经碰到底部
+			 ** 此时小球圆心Y抽的坐标为容器高度-小球半径，此时为了让小球有一个往上的状态应让改变小球的
+			 **  运动轨迹，即让vy对于以前的-vy
+			*/
+			if(ball.y >= HEIGHT-ball.r) {
+				ball.y = HEIGHT-ball.r
+				ball.vy = -ball.vy
+			}
+			/*
+			 **上面
+			*/
+			if(ball.y <= ball.r) {
+				ball.y = ball.r
+				ball.vy = -ball.vy
+			}
+			//  左边
+			if(ball.x <= ball.r) {
+				ball.x = ball.r
+				ball.vx = -ball.vx
+			}
+			//  右边
+			if(ball.x >= WIDTH-ball.r) {
+				ball.x = WIDTH-ball.r
+				ball.vx = -ball.vx
+			}
+		}
+
+		function render(ctx) {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT)
+      ctx.fillStyle = ball.color;
+      ctx.beginPath()
+      /*
+      *ctx.arc(x, y, 半径, 起始位置, 结束位置, 是否是逆时针默认为false)
+       x, y为圆心的位置 如： ctx.arc(0, 0, 8, 0, 1.5*Math.PI, false)
+      */
+      ctx.arc(ball.x, ball.y, ball.r, 0, 2*Math.PI)
+      ctx.closePath()
+      ctx.fill()
+		}
+	</script>
+</body>
+</html>
